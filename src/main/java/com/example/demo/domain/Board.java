@@ -12,3 +12,7 @@ public class Board {
 	private LocalDateTime inserted;
 	private String writer;
 }
+
+
+
+

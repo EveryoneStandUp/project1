@@ -29,29 +29,31 @@ public interface BoardMapper {
 
 	@Update("""
 			UPDATE Board
-			SET
+			SET 
 				title = #{title},
 				body = #{body},
 				writer = #{writer}
-			WHERE 
+			WHERE
 				id = #{id}
 			""")
-
 	int update(Board board);
 
 	@Delete("""
-			DELETE 
-			FROM Board
+			DELETE FROM Board
 			WHERE id = #{id}
 			""")
 	int deleteById(Integer id);
+
+	@Insert("""
+			INSERT INTO Board (title, body, writer)
+			VALUES (#{title}, #{body}, #{writer})
+			""")
+	@Options(useGeneratedKeys = true, keyProperty = "id")
+	int insert(Board board);
+	
+
 	
 }
-
-
-
-
-
 
 
 
