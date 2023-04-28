@@ -50,6 +50,38 @@ public interface BoardMapper {
 			""")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	int insert(Board board);
+
+	@Select("""
+			<script>
+			<bind name="pattern" value="'%' + search + '%'" />
+			SELECT 
+				id,
+				title,
+				writer,
+				inserted
+			FROM Board
+			WHERE 
+				   title  LIKE #{pattern}
+				OR body   LIKE #{pattern}
+				OR writer LIKE #{pattern}
+			ORDER BY id DESC
+			LIMIT #{startIndex}, #{rowPerPage}	
+			</script>
+			""")
+	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage, String search);
+
+	@Select("""
+			<script>
+			<bind name="pattern" value="'%' + search + '%'" />
+			SELECT COUNT(*)
+			FROM Board
+			WHERE 
+				   title  LIKE #{pattern}
+				OR body   LIKE #{pattern}
+				OR writer LIKE #{pattern}
+			</script>
+			""")
+	Integer countAll(String search);
 	
 
 	
