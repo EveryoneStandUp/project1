@@ -25,11 +25,12 @@ public class BoardController {
 	@GetMapping({ "/", "list" })
 	public String list(Model model, 
 			@RequestParam(value="page", defaultValue = "1") Integer page,
-			@RequestParam(value="search", defaultValue = "") String search) {
+			@RequestParam(value="search", defaultValue = "") String search,
+			@RequestParam(value="type", required = false) String type) {
 		// 1. request param 수집/가공
 		// 2. business logic 처리
 		//List<Board> list = service.listBoard(); // 페이지 처리 전
-		Map<String, Object> result = service.listBoard(page, search); // 페이지 처리
+		Map<String, Object> result = service.listBoard(page, search, type); // 페이지 처리
 		
 		// 3. add attribute
 //		model.addAttribute("boardList", result.get("boardList"));
@@ -100,11 +101,11 @@ public class BoardController {
 	@PostMapping("add")
 	public String addProcess(Board board, RedirectAttributes rttr) {
 		// 새 게시물 db에 추가
-		// 1.
-		// 2.
+		// 1. request param 수집/가공
+		// 2. business logic 처리
 		boolean ok = service.addBoard(board);
-		// 3.
-		// 4.
+		// 3. add attribute
+		// 4. forward/redirect
 		if (ok) {
 			rttr.addFlashAttribute("message", board.getId() + "번 게시물이 등록되었습니다.");
 			return "redirect:/id/" + board.getId();
