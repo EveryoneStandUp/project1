@@ -1,20 +1,31 @@
 package com.example.demo.service;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
-import org.springframework.web.multipart.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.domain.*;
-import com.example.demo.mapper.*;
+import com.example.demo.domain.Board;
+import com.example.demo.mapper.BoardMapper;
+
+import software.amazon.awssdk.services.s3.S3Client;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class BoardService {
 
+	@Autowired
+	private S3Client s3;
+	
+	@Value("${aws.s3.bucketName}")
+	private String bucketName;
+	
 	@Autowired
 	private BoardMapper mapper;
 
