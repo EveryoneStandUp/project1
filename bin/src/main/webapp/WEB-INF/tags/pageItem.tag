@@ -11,8 +11,7 @@
 		<c:param name="type" value="${param.type }" />
 	</c:if>
 </c:url>
-<li class="page-item">
-		<a class="page-link ${pageNum eq pageInfo.currentPageNum ? 'active' : '' }" href="${pageLink }">
+<li class="page-item"><a class="page-link ${pageNum eq pageInfo.currentPageNum ? 'active' : '' }" href="${pageLink }">
 		<jsp:doBody></jsp:doBody>
 	</a>
 </li>
