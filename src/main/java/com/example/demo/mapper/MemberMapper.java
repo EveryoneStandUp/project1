@@ -41,12 +41,20 @@ public interface MemberMapper {
 
 	
 	@Update("""
+			<script>
+			
 			UPDATE Member
-			SET password = #{password},
+			SET
+				<if test="password neq null and password neq ''">
+			 	password = #{password},
+				</if>
+				
 				nickName = #{nickName},
 				email = #{email}
 			WHERE
 				id = #{id}
+				
+			</script>
 			""")
 	Integer update(Member member);
 }
