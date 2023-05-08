@@ -2,9 +2,11 @@ package com.example.demo.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.domain.Member;
 
@@ -30,4 +32,21 @@ public interface MemberMapper {
 			WHERE id = #{id}
 			""")
 	Member selectById(String id);
+
+	@Delete("""
+			DELETE FROM Member
+			WHERE id = #{id}
+			""")
+	Integer deleteById(String id);
+
+	
+	@Update("""
+			UPDATE Member
+			SET password = #{password},
+				nickName = #{nickName},
+				email = #{email}
+			WHERE
+				id = #{id}
+			""")
+	Integer update(Member member);
 }

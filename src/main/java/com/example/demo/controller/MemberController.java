@@ -1,18 +1,15 @@
 package com.example.demo.controller;
 
-import java.util.List;
+import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.ui.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.*;
 
-import com.example.demo.domain.Member;
-import com.example.demo.service.MemberService;
+import com.example.demo.domain.*;
+import com.example.demo.service.*;
 
 @Controller
 @RequestMapping("member")
@@ -47,12 +44,52 @@ public class MemberController {
 		model.addAttribute("memberList", list);
 	}
 	
-	// 경로 : /member/info?id=asdf
+	// 경로: /member/info?id=asdf
 	@GetMapping("info")
 	public void info(String id, Model model) {
 		
 		Member member = service.get(id);
 		model.addAttribute("member", member);
+		
+	}
+	
+	@PostMapping("remove")
+	public String remove(Member member, RedirectAttributes rttr) {
+		
+		boolean ok = service.remove(member);
+		
+		if (ok) {
+			rttr.addFlashAttribute("message", "회원 탈퇴하였습니다.");
+			return "redirect:/list";
+		} else {
+			rttr.addFlashAttribute("message", "회원 탈퇴시 문제가 발생하였습니다.");
+			return "redirect:/member/info?id=" + member.getId(); 
+		}
+	}
+	
+	// 1.
+	@GetMapping("modify")
+	public void modifyForm(String id, Model model) {
+		Member member = service.get(id);
+		model.addAttribute("member", member);
+//		model.addAttribute(service.get(id));
+		
+	}
+	
+	
+	// 2.
+	@PostMapping("modify")
+	public String modifyProcess(Member member, String oldPassword, RedirectAttributes rttr) {
+		boolean ok = service.modify(member, oldPassword);
+		
+		if (ok) {
+			rttr.addFlashAttribute("message", "회원 정보가 수정되었습니다.");
+			return "redirect:/member/info?id=" + member.getId();
+		} else {
+			rttr.addFlashAttribute("message", "회원 정보 수정시 문제가 발생하였습니다.");
+			return "redirect:/member/modify?id=" + member.getId();
+		}
+		
 	}
 }
 
