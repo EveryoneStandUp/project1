@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.*;
+import org.springframework.security.config.annotation.method.configuration.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.*;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.ServletContext;
@@ -18,6 +21,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
+@EnableMethodSecurity
 public class CustomConfiguration {
 	@Value("${aws.accessKeyId}")
 	private String accessKeyId;
@@ -43,6 +47,26 @@ public class CustomConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable();
+	
+//		http.formLogin(Customizer.withDefaults());
+		http.formLogin().loginPage("/member/login");
+		http.logout().logoutUrl("/member/logout");
+		
+//		http.authorizeHttpRequests().requestMatchers("/add").authenticated();
+//		http.authorizeHttpRequests().requestMatchers("/member/signup").anonymous();
+//		http.authorizeHttpRequests().requestMatchers("/**").permitAll();
+		
+//		http.authorizeHttpRequests()
+//			.requestMatchers("/add")
+//			.access(new WebExpressionAuthorizationManager("isAuthenticated()"));
+//		http.authorizeHttpRequests()
+//			.requestMatchers("/member/signup")
+//			.access(new WebExpressionAuthorizationManager("isAnonymous()"));
+//		http.authorizeHttpRequests()
+//			.requestMatchers("/**")
+//			.access(new WebExpressionAuthorizationManager("permitAll()"));
+		
+		
 		return http.build();
 	}
 	

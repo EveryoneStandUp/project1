@@ -11,35 +11,23 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-	<my:navBar current="signup"></my:navBar>
-	
-	<my:alert></my:alert>
+
+	<my:navBar current="login"></my:navBar>
 
 	<div class="container-lg">
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
-				<h1>회원 가입</h1>
+				<h1>로그인</h1>
 				<form method="post">
-					<!-- .mb-3*5>(label.form-label[for]+input.form-control[name]) -->
 					<div class="mb-3">
-						<label for="inputId" class="form-label">아이디</label>
-						<input id="inputId" type="text" class="form-control" name="id" value="${member.id }" />
+						<label for="inputUsername" class="form-label"> 아이디</label>
+						<input id="inputUsername" class="form-control" type="text" name="username" />
 					</div>
 					<div class="mb-3">
-						<label for="inputPassword" class="form-label">패스워드</label>
-						<input id="inputPassword" type="password" class="form-control" name="password" />
+						<label for="inputPassword" class="form-label">암호</label>
+						<input id="inputPassword" class="form-control" type="text" name="password" />
 					</div>
-					<div class="mb-3">
-						<label for="inputNickName" class="form-label">별명</label>
-						<input id="inputNickName" type="text" class="form-control" name="nickName" value="${member.nickName }" />
-					</div>
-					<div class="mb-3">
-						<label for="inputEmail" class="form-label">이메일</label>
-						<input id="inputEmail" type="email" class="form-control" name="email" value="${member.email }"/>
-					</div>
-					<div class="mb-3">
-						<input type="submit" class="btn btn-primary" value="가입" />
-					</div>
+					<input class="btn btn-primary" type="submit" value="로그인" />
 				</form>
 			</div>
 		</div>

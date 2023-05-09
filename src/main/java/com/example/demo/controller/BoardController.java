@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.access.prepost.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/modify/{id}")
+	@PreAuthorize("isAuthenticated()")
 	public String modifyForm(@PathVariable("id") Integer id, Model model) {
 		model.addAttribute("board", service.getBoard(id));
 		return "modify";
@@ -61,6 +63,7 @@ public class BoardController {
 
 //	@RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
 	@PostMapping("/modify/{id}")
+	@PreAuthorize("isAuthenticated()")
 	public String modifyProcess(Board board,
 			@RequestParam(value = "files", required = false) MultipartFile[] addFiles,
 			@RequestParam(value = "removeFiles", required = false) List<String> removeFileNames,
@@ -82,6 +85,7 @@ public class BoardController {
 	}
 
 	@PostMapping("remove")
+	@PreAuthorize("isAuthenticated()")
 	public String remove(Integer id, RedirectAttributes rttr) {
 		boolean ok = service.remove(id);
 		if (ok) {
@@ -98,11 +102,13 @@ public class BoardController {
 	}
 
 	@GetMapping("add")
+	@PreAuthorize("isAuthenticated()")
 	public void addForm() {
 		// 게시물 작성 form (view)로 포워드
 	}
 
 	@PostMapping("add")
+	@PreAuthorize("isAuthenticated()")
 	public String addProcess(
 			@RequestParam("files") MultipartFile[] files,
 			Board board, RedirectAttributes rttr) throws Exception {
