@@ -53,11 +53,14 @@
 						<input type="text" readonly class="form-control" value="${board.inserted }" />
 					</div>
 					
-					<sec:authorize access="isAuthenticated()">	
-						<div>
-							<a class="btn btn-secondary" href="/modify/${board.id }">수정</a>
-							<button id="removeButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">삭제</button>
-						</div>
+					<sec:authorize access="isAuthenticated()">
+						<sec:authentication property="name" var="userId"/>
+						<c:if test="${userId eq board.writer }">	
+							<div>
+								<a class="btn btn-secondary" href="/modify/${board.id }">수정</a>
+								<button id="removeButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">삭제</button>
+							</div>
+						</c:if>	
 					</sec:authorize>
 				
 				</div>
@@ -66,11 +69,14 @@
 	</div>
 
 	<sec:authorize access="isAuthenticated()">
-		<div class="d-none">
-			<form action="/remove" method="post" id="removeForm">
-				<input type="text" name="id" value="${board.id }" />
-			</form>
-		</div>
+		<sec:authentication property="name" var="userId"/>
+		<c:if test="${userId eq board.writer }">	
+			<div class="d-none">
+				<form action="/remove" method="post" id="removeForm">
+					<input type="text" name="id" value="${board.id }" />
+				</form>
+			</div>
+		</c:if>
 	</sec:authorize>
 	<!-- Modal -->
 	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
