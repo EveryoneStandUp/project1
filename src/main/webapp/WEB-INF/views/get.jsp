@@ -53,7 +53,7 @@
 						<input type="text" readonly class="form-control" value="${board.inserted }" />
 					</div>
 					
-					<sec:authorize access="isAuthenticated()">
+					<sec:authorize access="isAuthenticated()" >
 						<sec:authentication property="name" var="userId"/>
 						<c:if test="${userId eq board.writer }">	
 							<div>
