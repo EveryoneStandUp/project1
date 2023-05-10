@@ -2,11 +2,7 @@ package com.example.demo.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import com.example.demo.domain.Member;
 
@@ -28,9 +24,10 @@ public interface MemberMapper {
 	
 	@Select("""
 			SELECT *
-			FROM Member
+			FROM Member m LEFT JOIN MemberAuthority ma ON m.id = ma.memberId
 			WHERE id = #{id}
 			""")
+	@ResultMap("memberMap")
 	Member selectById(String id);
 
 	@Delete("""
