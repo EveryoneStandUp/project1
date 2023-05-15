@@ -1,23 +1,19 @@
 package com.example.demo.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
+import org.springframework.web.multipart.*;
 
-import com.example.demo.domain.Board;
-import com.example.demo.mapper.BoardMapper;
+import com.example.demo.domain.*;
+import com.example.demo.mapper.*;
 
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
-import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.core.sync.*;
+import software.amazon.awssdk.services.s3.*;
+import software.amazon.awssdk.services.s3.model.*;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -31,6 +27,9 @@ public class BoardService {
 
 	@Autowired
 	private BoardMapper mapper;
+	
+	@Autowired
+	private BoardLikeMapper likeMapper;
 
 	public List<Board> listBoard() {
 		List<Board> list = mapper.selectAll();
@@ -169,24 +168,30 @@ public class BoardService {
 	}
 
 	public void removeByWriter(String writer) {
-		List<Integer> idList = mapper.selectBoardIdByWriter(writer);
-	
+		List<Integer> idList = mapper.selectIdByWriter(writer);
+		
 		for (Integer id : idList) {
 			remove(id);
 		}
+		
+	}
+
+	public Map<String, Object> like(Like like, Authentication authentication) {
+		Map<String, Object> result = new HashMap<>();
+		
+		result.put("like", false);
+		
+		like.setMemberId(authentication.getName());
+		Integer deleteCnt = likeMapper.delete(like);
+		
+		if (deleteCnt != 1) {
+			Integer insertCnt = likeMapper.insert(like);
+			result.put("like", true);
+		}
+		
+		return result;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

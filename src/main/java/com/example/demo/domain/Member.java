@@ -14,3 +14,9 @@ public class Member {
 	private LocalDateTime inserted;
 	private List<String> authority;
 }
+
+
+
+
+
+

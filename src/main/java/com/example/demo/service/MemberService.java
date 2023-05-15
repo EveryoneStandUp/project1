@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
@@ -51,7 +52,7 @@ public class MemberService {
 			// 암호가 같으면?
 			
 			// 이 회원이 작성한 게시물 row 삭제
-			boardService.removeByWriter(member.getId()); 
+			boardService.removeByWriter(member.getId());
 			
 			// 회원 테이블 삭제
 			cnt = mapper.deleteById(member.getId());
@@ -61,6 +62,7 @@ public class MemberService {
 	}
 
 	public boolean modify(Member member, String oldPassword) {
+		
 		// 패스워드를 바꾸기 위해 입력했다면...
 		if (!member.getPassword().isBlank()) {
 			
@@ -68,7 +70,7 @@ public class MemberService {
 			String plain = member.getPassword();
 			member.setPassword(passwordEncoder.encode(plain));
 		}
-			
+		
 		Member oldMember = mapper.selectById(member.getId());
 
 		int cnt = 0;
@@ -79,6 +81,38 @@ public class MemberService {
 		}
 		
 		return cnt == 1;
+	}
+
+	public Map<String, Object> checkId(String id) {
+		Member member = mapper.selectById(id);
+		
+		return Map.of("available", member == null);
+	}
+
+	public Map<String, Object> checkNickName(String nickName, Authentication authentication) {
+		Member member = mapper.selectByNickName(nickName);
+		if (authentication != null) {
+			Member oldMember = mapper.selectById(authentication.getName());
+			
+			return Map.of("available", member == null || oldMember.getNickName().equals(nickName));
+		} else {
+			return Map.of("available", member == null);
+		}
+		
+	}
+
+	public Map<String, Object> checkEmail(String email, Authentication authentication) {
+		Member member = mapper.selectByEmail(email);
+		
+		if (authentication != null) {
+			Member oldMember = mapper.selectById(authentication.getName());
+			
+			return Map.of("available", member == null || oldMember.getEmail().equals(email));
+		} else {
+			return Map.of("available", member == null);
+			
+		}
+		
 	}
 }
 

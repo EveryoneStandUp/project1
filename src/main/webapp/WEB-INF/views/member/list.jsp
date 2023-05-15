@@ -39,6 +39,7 @@
 									<a href="${memberInfoLink }">
 										${member.id }
 									</a>
+								
 								</td>
 								<td>${member.password }</td>
 								<td>${member.nickName }</td>

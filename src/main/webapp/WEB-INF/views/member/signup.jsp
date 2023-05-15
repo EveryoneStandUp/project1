@@ -22,36 +22,79 @@
 				<form method="post">
 					<!-- .mb-3*5>(label.form-label[for]+input.form-control[name]) -->
 					<div class="mb-3">
-						<label for="inputId" class="form-label">아이디</label> 
-						<input id="inputId" type="text" class="form-control" name="id" value="${member.id }" />
+						<label for="inputId" class="form-label">아이디</label>
+						<div class="input-group">
+							<input id="inputId" type="text" class="form-control" name="id" value="${member.id }" />
+							<button class="btn btn-outline-secondary" type="button" id="checkIdBtn">중복확인</button>
+						</div>
+
+						<div class="d-none form-text text-primary" id="availableIdMessage">
+							<i class="fa-solid fa-check"></i>
+							사용 가능한 ID입니다.
+						</div>
+						<div class="d-none form-text text-danger" id="notAvailableIdMessage">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							사용 불가능한 ID입니다.
+						</div>
+
+
 					</div>
 					<div class="mb-3">
-						<label for="inputPassword" class="form-label">패스워드</label> 
+						<label for="inputPassword" class="form-label">패스워드</label>
 						<input id="inputPassword" type="password" class="form-control" name="password" />
 					</div>
 
 					<div class="mb-3">
-						<label for="inputPasswordCheck" class="form-label">패스워드 확인</label> 
+						<label for="inputPasswordCheck" class="form-label">패스워드 확인</label>
 						<input id="inputPasswordCheck" type="password" class="form-control" />
-					</div>
-					<div id="passwordSuccessText" class="d-none form-text text-primary">
-						<i class="fa-solid fa-check"></i>
-						패스워드가 일치합니다.
-					</div>
-					
-					<div id="passwordFailText" class="d-none form-text text-danger">
-						<i class="fa-solid fa-triangle-exclamation"></i>
-						패스워드가 일치하지 않습니다.
+
+						<div id="passwordSuccessText" class="d-none form-text text-primary">
+							<i class="fa-solid fa-check"></i>
+							패스워드가 일치 합니다.
+						</div>
+
+						<div id="passwordFailText" class="d-none form-text text-danger">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							패스워드가 일치하지 않습니다.
+						</div>
+
 					</div>
 
 					<div class="mb-3">
-						<label for="inputNickName" class="form-label">별명</label> <input id="inputNickName" type="text" class="form-control" name="nickName" value="${member.nickName }" />
+						<label for="inputNickName" class="form-label">별명</label>
+						<div class="input-group">
+							<input id="inputNickName" type="text" class="form-control" name="nickName" value="${member.nickName }" />
+							<button class="btn btn-outline-secondary" type="button" id="checkNickNameBtn">중복확인</button>
+						</div>
+
+						<div class="d-none form-text text-primary" id="availableNickNameMessage">
+							<i class="fa-solid fa-check"></i>
+							사용 가능한 별명입니다.
+						</div>
+						<div class="d-none form-text text-danger" id="notAvailableNickNameMessage">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							사용 불가능한 별명입니다.
+						</div>
+
 					</div>
 					<div class="mb-3">
-						<label for="inputEmail" class="form-label">이메일</label> <input id="inputEmail" type="email" class="form-control" name="email" value="${member.email }" />
+						<label for="inputEmail" class="form-label">이메일</label>
+						<div class="input-group">
+							<input id="inputEmail" type="email" class="form-control" name="email" value="${member.email }" />
+							<button class="btn btn-outline-secondary" type="button" id="checkEmailBtn">중복확인</button>
+						</div>
+
+						<div class="d-none form-text text-primary" id="availableEmailMessage">
+							<i class="fa-solid fa-check"></i>
+							사용 가능한 이메일입니다.
+						</div>
+						<div class="d-none form-text text-danger" id="notAvailableEmailMessage">
+							<i class="fa-solid fa-triangle-exclamation"></i>
+							사용 불가능한 이메일입니다.
+						</div>
 					</div>
 					<div class="mb-3">
-						<input id="signupSubmit" type="submit" class="btn btn-primary disabled" value="가입" />
+						<input id="signupSubmit" type="submit" class="btn btn-primary" disabled value="가입" />
 					</div>
 				</form>
 			</div>

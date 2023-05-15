@@ -7,7 +7,7 @@ import lombok.*;
 
 @Data
 public class Board {
-	private Integer id; 
+	private Integer id;
 	private String title;
 	private String body;
 	private LocalDateTime inserted;

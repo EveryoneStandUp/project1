@@ -9,10 +9,10 @@ import com.example.demo.mapper.*;
 
 @Component
 public class CustomSecurityChecker {
-
+	
 	@Autowired
 	private BoardMapper mapper;
-	
+
 	public boolean checkBoardWriter(Authentication authentication, Integer boardId) {
 		Board board = mapper.selectById(boardId);
 		
@@ -22,3 +22,8 @@ public class CustomSecurityChecker {
 		return username.equals(writer);
 	}
 }
+
+
+
+
+

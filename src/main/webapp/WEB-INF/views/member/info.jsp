@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="my" tagdir="/WEB-INF/tags"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,16 +23,20 @@
 				<h1>회원 정보</h1>
 				<!-- .mb-3*4>label+input -->
 				<div class="mb-3">
-					<label class="form-label" for="">아이디</label> <input class="form-control" type="text" value="${member.id }" readonly />
+					<label class="form-label" for="">아이디</label>
+					<input class="form-control" type="text" value="${member.id }" readonly />
 				</div>
 				<div class="mb-3">
-					<label class="form-label" for="">패스워드</label> <input class="form-control" type="text" value="${member.password }" readonly />
+					<label class="form-label" for="">패스워드</label>
+					<input class="form-control" type="text" value="${member.password }" readonly />
 				</div>
 				<div class="mb-3">
-					<label class="form-label" for="">별명</label> <input class="form-control" type="text" value="${member.nickName }" readonly />
+					<label class="form-label" for="">별명</label>
+					<input class="form-control" type="text" value="${member.nickName }" readonly />
 				</div>
 				<div class="mb-3">
-					<label class="form-label" for="">이메일</label> <input class="form-control" type="text" value="${member.email }" readonly />
+					<label class="form-label" for="">이메일</label>
+					<input class="form-control" type="text" value="${member.email }" readonly />
 				</div>
 
 				<sec:authorize access="authentication.name eq #member.id">
@@ -44,6 +48,7 @@
 	</div>
 
 	<sec:authorize access="authentication.name eq #member.id">
+
 		<!-- 탈퇴 확인 Modal -->
 		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -67,6 +72,7 @@
 			</div>
 		</div>
 	</sec:authorize>
+
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
