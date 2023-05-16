@@ -21,14 +21,14 @@ public interface BoardMapper {
 	List<Board> selectAll();
 
 	@Select("""
-			SELECT 
-				b.id,
-				b.title,
-				b.body,
-				b.inserted,
-				b.writer,
-				f.fileName
-			FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
+SELECT b.id,
+	   b.title,
+       b.body,
+       b.inserted,
+       b.writer,
+       f.fileName,
+       (SELECT COUNT(*) FROM BoardLike WHERE boardId = b.id) likeCount
+FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
 			WHERE b.id = #{id}
 			""")
 	@ResultMap("boardResultMap")
