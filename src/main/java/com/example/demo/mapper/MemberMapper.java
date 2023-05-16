@@ -67,6 +67,8 @@ public interface MemberMapper {
 			WHERE email = #{email}
 			""")
 	Member selectByEmail(String email);
+
+
 }
 
 

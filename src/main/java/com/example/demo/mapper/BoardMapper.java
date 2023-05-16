@@ -65,7 +65,8 @@ FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
 				b.title,
 				b.writer,
 				b.inserted,
-				COUNT(f.id) fileCount
+				COUNT(f.id) fileCount,
+				(SELECT COUNT(*) FROM BoardLike WHERE boardId = b.id) likeCount
 			FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
 			
 			<where>
@@ -92,7 +93,6 @@ FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
 			<bind name="pattern" value="'%' + search + '%'" />
 			SELECT COUNT(*) 
 			FROM Board
-			
 			<where>
 				<if test="(type eq 'all') or (type eq 'title')">
 				   title  LIKE #{pattern}
