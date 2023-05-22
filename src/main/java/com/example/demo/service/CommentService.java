@@ -1,32 +1,47 @@
 package com.example.demo.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
-import com.example.demo.domain.Comment;
-import com.example.demo.mapper.CommentMapper;
+import com.example.demo.domain.*;
+import com.example.demo.mapper.*;
 
-@Service 
+@Service
 @Transactional(rollbackFor = Exception.class)
 public class CommentService {
 	
 	@Autowired
 	private CommentMapper mapper;
-	
-	public List<Comment> list(Integer boardId) {
+
+	public List<Comment> list(Integer boardId, Authentication authentication) {
+		List<Comment> comments = mapper.selectAllByBoardId(boardId);
+		if (authentication != null) {
+//			List<Comment> commentsWithEditable =
+//					comments.stream()
+//						.map(c -> {
+//							c.setEditable(c.getMemberId().equals(authentication.getName()));
+//							return c;
+//						})
+//						.toList();
+			
+			
+			for (Comment comment : comments) {
+				comment.setEditable(comment.getMemberId().equals(authentication.getName()));
+			}
+		}
 		
-		return mapper.selectAllByBoardId(boardId);
+		// TODO Auto-generated method stub
+		return comments;
 	}
 
-	public Map<String, Object> add(Comment comment) {
-		comment.setMemberId("user9");
+	public Map<String, Object> add(Comment comment, Authentication authentication) {
+		comment.setMemberId(authentication.getName());
 		
-		var res  = new HashMap<String, Object>();
+		var res = new HashMap<String, Object>();
 		
 		int cnt = mapper.insert(comment);
 		if (cnt == 1) {
@@ -46,7 +61,7 @@ public class CommentService {
 		if (cnt == 1) {
 			res.put("message", "댓글이 삭제되었습니다.");
 		} else {
-			res.put("message", "댓글이 삭제되지 않았습니다.");
+			res.put("message", "댓글이 삭제 되지 않았습니다.");
 		}
 		
 		return res;
@@ -64,8 +79,11 @@ public class CommentService {
 		} else {
 			res.put("message", "댓글이 수정되지 않았습니다.");
 		}
-		
 		return res;
 	}
 
 }
+
+
+
+

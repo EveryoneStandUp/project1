@@ -1,25 +1,20 @@
 package com.example.demo.controller;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.security.access.prepost.*;
+import org.springframework.security.core.*;
+import org.springframework.stereotype.*;
+import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.domain.Comment;
-import com.example.demo.service.CommentService;
+import com.example.demo.domain.*;
+import com.example.demo.service.*;
 
-@Controller
+@RestController
+//@Controller
+//@ResponseBody
 @RequestMapping("comment")
 public class CommentController {
 	
@@ -27,7 +22,7 @@ public class CommentController {
 	private CommentService service;
 	
 	@PutMapping("update")
-	@ResponseBody
+//	@ResponseBody
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Comment comment) {
 		Map<String, Object> res = service.update(comment);
 		
@@ -35,13 +30,14 @@ public class CommentController {
 	}
 
 	@GetMapping("id/{id}")
-	@ResponseBody
+//	@ResponseBody
 	public Comment get(@PathVariable("id") Integer id) {
 		return service.get(id);
 	}
 //	@RequestMapping(path = "id/{id}", method = RequestMethod.DELETE)
 	@DeleteMapping("id/{id}")
-	@ResponseBody	
+//	@ResponseBody	
+	@PreAuthorize("authenticated and @customSecurityChecker.checkCommentWriter(authentication, #id)")
 	public ResponseEntity<Map<String, Object>> remove(@PathVariable("id") Integer id) { 
 		Map<String, Object> res = service.remove(id);
 		
@@ -50,19 +46,26 @@ public class CommentController {
 	}
 	
 	@PostMapping("add")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> add(@RequestBody Comment comment) {
+//	@ResponseBody
+	public ResponseEntity<Map<String, Object>> add( 
+			@RequestBody Comment comment,
+			Authentication authentication) {
 		
-		Map<String, Object> res = service.add(comment);
+		if(authentication == null) {
+			Map<String, Object> res = Map.of("message", "로그인 후 댓글을 작성해주세요.");
+			return ResponseEntity.status(401).body(null);
+		} else {
+			Map<String, Object> res = service.add(comment, authentication);
 		
-		return ResponseEntity.ok().body(res);
+			return ResponseEntity.ok().body(res);
+		}
 	}
 	
 	@GetMapping("list")
-	@ResponseBody
-	public List<Comment> list(@RequestParam("board") Integer boardId) {
+//	@ResponseBody
+	public List<Comment> list(@RequestParam("board") Integer boardId, Authentication authentication) {
 		
 //		return List.of("댓1", "댓2", "댓3");
-		return service.list(boardId);
+		return service.list(boardId, authentication);
 	}
 }
