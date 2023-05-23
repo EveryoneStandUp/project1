@@ -30,6 +30,9 @@ public class BoardService {
 	
 	@Autowired
 	private BoardLikeMapper likeMapper;
+	
+	@Autowired
+	private CommentMapper commentMapper;
 
 	public List<Board> listBoard() {
 		List<Board> list = mapper.selectAll();
@@ -93,6 +96,9 @@ public class BoardService {
 	}
 
 	public boolean remove(Integer id) {
+		
+		// 댓글 테이블 지우기
+		commentMapper.deleteByBoardId(id);
 		
 		// 좋아요 테이블 지우기
 		likeMapper.deleteByBoardId(id);
